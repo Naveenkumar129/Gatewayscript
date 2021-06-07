@@ -1,0 +1,11 @@
+{
+    "account_type": "deposit",
+    "balance": 1230,
+    "recent-deposits": [
+        100,
+        130,
+        1000,
+        {"last": 3},
+		2000],
+	"is_overdrawn": false
+}
