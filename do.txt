@@ -1,5 +1,49 @@
 https://github.com/manjime83/datapower-tools/blob/77dd05dc325bc978daa455dcf2db059e7c5181b2/jose-firewall/local/js/jose-verify-with-config.js
+--------------
 
+if(context.get('request.headers.authorization')){
+                    var vAuth = (context.get('request.headers.authorization').split(' ').pop());
+
+
+--------------
+
+
+if(context.get('request.headers.authorization')){
+                    var vAuth = (context.get('request.headers.authorization').split(' ').pop());
+ title: gatewayscript
+                    version: 1.0.0
+                    source: "var reqauth = apim.getvariable('request.authorization').split(' ');\n
+
+
+var splitval = new Buffer((reqauth[1] || ''), 'base64').toString('utf8').split(':');\n
+
+
+var username = splitval[0] || '';\n
+
+
+
+
+var password = splitval[1] || '';\napim.console.debug('user credential : [' + username + ':' + password + ']');\nif (username === 
+
+apim.getvariable('request.parameters.username') && password === apim.getvariable('request.parameters.password')) {\n
+
+\tsession.output.write({ \"authenticatedUser\": username });\n\tapim.setvariable('message.headers.api-authenticated-credential', 'cn=' 
+
++ username + ',email=' + username + '@poon.com');\n\tapim.setvariable('message.status.code', 200);\n\tapim.output
+
+('application/json');\n}\nelse {\n\tapim.setvariable('message.status.code', 401);\n}"
+            - operations:
+                - verb: get
+                  path: /ping
+              execute:
+
+
+
+/*Base64 decode the token*/
+                    var vDecodedAuthFULL = new Buffer(vAuth,'base64').toString('ascii');
+                    console.debug('****Decoded.Auth.Header: ' + vDecodedAuthFULL);
+                    /*Modify decoded token to fit json format*/
+                    var vDecodedAuthSPLIT = JSON.parse(vDecodedAuthFULL.split('}.{'));
 
 -----
 
