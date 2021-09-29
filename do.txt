@@ -1,6 +1,12 @@
 https://github.com/manjime83/datapower-tools/blob/77dd05dc325bc978daa455dcf2db059e7c5181b2/jose-firewall/local/js/jose-verify-with-config.js
 --------------
+<xsl:text disable-output-escaping="yes"><![CDATA[CREATE TABLE IF NOT EXISTS `]]></xsl:text>
 
+
+
+<ToUserName><![CDATA[toUserId]]></ToUserName>
+
+----------
 if(context.get('request.headers.authorization')){
 var vAuth = (context.get('request.headers.authorization').split(' ').pop());
 ------
