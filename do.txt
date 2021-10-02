@@ -5,6 +5,64 @@ https://github.com/manjime83/datapower-tools/blob/77dd05dc325bc978daa455dcf2db05
 
 
 <ToUserName><![CDATA[toUserId]]></ToUserName>
+-----------
+
+var urlopen = require ('urlopen');
+var sm = require ('service-metadata');
+var dpuri = sm.getVar ('var://service/URI');
+var endpoint = 'https://gw-apic.qiwa.info/takamol/staging/takamol-oauth/oauth2/token';
+
+var options = {
+            target: endpoint,
+            method: 'POST',
+           headers:{'Content-Type' : 'application/x-www-form-urlencoded' },
+           contentType: 'application/x-www-form-urlencoded',		   
+         data : "client_id=ab8eb9a74291d8b627d99c9c328f0821&client_secret=965bf427d5b14de1aae4efdf87851547&grant_type=client_credentials&scope=IntegrationScope"
+};
+urlopen.open(options, function(error, response) {
+  if (error) {
+    // an error occurred during the request sending or response header parsing
+    session.output.write("urlopen error: "+JSON.stringify(error));
+  } else {
+    // get the response status code
+    var responseStatusCode = response.statusCode;
+    var responseReasonPhrase = response.reasonPhrase;
+    console.log("Response status code: " + responseStatusCode);
+    console.log("Response reason phrase: " + responseReasonPhrase);
+    // reading response data
+    response.readAsJSON(function(error, responseData){
+      if (error){
+        throw error ;
+      } else {
+        var token = "Bearer"+" "+responseData.access_token;
+var options1 = {
+            target: 'https://gw-apic.qiwa.info'+dpuri,
+            method: 'POST',
+           headers:{'Authorization' : token },
+           contentType: 'application/json',	   
+         data : json
+};
+urlopen.open(options1, function(error, response) {
+  if (error) {
+    
+    session.output.write("urlopen error: "+JSON.stringify(error));
+  } else {
+   
+    response.readAsBuffer(function(error, responseData){
+      if (error){
+        throw error ;
+      } else {
+        session.output.write(responseData) ;
+      }
+    });
+  }
+});
+
+      }
+    });
+  }
+});
+
 
 ----------
 if(context.get('request.headers.authorization')){
