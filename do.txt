@@ -10,7 +10,7 @@ https://github.com/manjime83/datapower-tools/blob/77dd05dc325bc978daa455dcf2db05
 var urlopen = require ('urlopen');
 var sm = require ('service-metadata');
 var dpuri = sm.getVar ('var://service/URI');
-var endpoint = 'https://gw-apic.qiwa.info/takamol/staging/takamol-oauth/oauth2/token';
+var endpoint = 'https://gw-apic.qiwa.info/tal/staging/ta-oauth/oauth2/token';
 
 var options = {
             target: endpoint,
