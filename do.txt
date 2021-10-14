@@ -1,5 +1,15 @@
 https://github.com/manjime83/datapower-tools/blob/77dd05dc325bc978daa455dcf2db059e7c5181b2/jose-firewall/local/js/jose-verify-with-config.js
 --------------
+
+var hm = require('header-metadata'); 
+
+var allHeaders = hm.current.get();
+console.log(JSON.stringify(allHeaders));
+
+var contentType = hm.current.get('Content-Type');
+console.log("Content-Type header %s", contentType);
+
+----------
 <xsl:text disable-output-escaping="yes"><![CDATA[CREATE TABLE IF NOT EXISTS `]]></xsl:text>
 
 
