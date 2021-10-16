@@ -80,6 +80,30 @@ urlopen.open(options1, function(error, response) {
 if(context.get('request.headers.authorization')){
 var vAuth = (context.get('request.headers.authorization').split(' ').pop());
 ------
+http headlog
+<?xml version="1.0" encoding="UTF-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+xmlns:str="http://exslt.org/strings"
+xmlns:dp="http://www.datapower.com/extensions"
+extension-element-prefixes="dp"
+exclude-result-prefixes="dp"
+version="1.0">
+<xsl:template match="/">
+
+<xsl:variable name="response">
+<xsl:copy-of select="*"/>
+</xsl:variable>
+
+<xsl:variable name="httpHeaders">
+  <header name="SOAPAction">http://www.webserviceX.NET/GetCitiesByCountry</header>
+  <header name="Content-Type">text/xml</header>
+</xsl:variable>
+
+<xsl:copy-of select="$response"/>
+<xsl:copy-of select="$httpHeaders"/>
+</xsl:template>
+
+----------------------
 
 var inCtx = 'param1';
 var inCtx2 = 'payload';
