@@ -3,6 +3,15 @@ https://github.com/manjime83/datapower-tools/blob/77dd05dc325bc978daa455dcf2db05
 var body = ' { "name": "test", "description": "test json", "website": "domain.com" } ';
 JSON.stringify(JSON.parse(body))
 -----
+
+<dp:set-variable name="'var://context/sp/accessToken'"
+
+value='string($acctkn)'/>
+---
+<xsl:variable name="acctkn">
+<xsl:value-of select="//output/access_token/text()"/>
+</xsl:variable>
+---------
 var hm = require('header-metadata'); 
 
 var allHeaders = hm.current.get();
