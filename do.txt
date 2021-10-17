@@ -80,28 +80,49 @@ urlopen.open(options1, function(error, response) {
 if(context.get('request.headers.authorization')){
 var vAuth = (context.get('request.headers.authorization').split(' ').pop());
 ------
-http headlog
-<?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-xmlns:str="http://exslt.org/strings"
-xmlns:dp="http://www.datapower.com/extensions"
-extension-element-prefixes="dp"
-exclude-result-prefixes="dp"
-version="1.0">
-<xsl:template match="/">
 
-<xsl:variable name="response">
-<xsl:copy-of select="*"/>
-</xsl:variable>
+get token
+var urlopen = require ('urlopen');
+var Token =session.name('sp').getVar('accessToken');
+var accessToken="";
+var sm = require ('service-metadata');
+session.output.write({"test":"test"});
+session.input.readAsJSON( function ( error, json) {
+console.error('count INPUT: %j', JSON.stringify(json));
+accessToken = "Bearer ";
+accessToken = accessToken.concat(Token);
+var options = {
+target: 'https://api.ciscospark.com/v1/people/me',
+sslClientProfile: 'ciscospark',
+method: 'get',
+headers: {"Authorization":accessToken}
+};
+urlopen.open (options, function (error, response) {
+if (error) {
+session.output.write ("urlopen connect error: " +
+JSON.stringify(error));
+} else {
+var responseStatusCode = response.statusCode;
+if (responseStatusCode == 200) {
+response.readAsJSON(function(error, responseData)
+{
+if (error) {
+session.output.write("readAsBuffer error:
+" + JSON.stringify(error));
+} else {
+//console.error('count: %j',JSON.stringify(responseData));
+session.output.write(JSON.stringify(responseData));
+}
+});
+} else {
+session.output.write ("urlopen target return
+statusCode " + responseStatusCode);
 
-<xsl:variable name="httpHeaders">
-  <header name="SOAPAction">http://www.webserviceX.NET/GetCitiesByCountry</header>
-  <header name="Content-Type">text/xml</header>
-</xsl:variable>
+}
+}
+});
+});
 
-<xsl:copy-of select="$response"/>
-<xsl:copy-of select="$httpHeaders"/>
-</xsl:template>
 
 ----------------------
 
