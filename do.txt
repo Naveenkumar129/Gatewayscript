@@ -1,4 +1,5 @@
 https://github.com/manjime83/datapower-tools/blob/77dd05dc325bc978daa455dcf2db059e7c5181b2/jose-firewall/local/js/jose-verify-with-config.js
+https://github.com/huqi1996/demo-collection/blob/f875b0640038f52df678cb84f546d4a377a9b16f/src/main/java/com/huqi/qs/crypto/MainCrypto.java
 --------------
 var body = ' { "name": "test", "description": "test json", "website": "domain.com" } ';
 JSON.stringify(JSON.parse(body))
