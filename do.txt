@@ -4,6 +4,13 @@ https://github.com/huqi1996/demo-collection/blob/f875b0640038f52df678cb84f546d4a
 var body = ' { "name": "test", "description": "test json", "website": "domain.com" } ';
 JSON.stringify(JSON.parse(body))
 -----
+var urlopen  = require('urlopen');
+var sm = require ('service-metadata.js');
+var hm = require ('header-metadata.js');
+
+var uri = sm.getVar ('var://service/URI');	
+console.warn("URI: " + uri);	
+--------
 
 <dp:set-variable name="'var://context/sp/accessToken'"
 
