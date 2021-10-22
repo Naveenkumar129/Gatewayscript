@@ -20,6 +20,93 @@ value='string($acctkn)'/>
 <xsl:value-of select="//output/access_token/text()"/>
 </xsl:variable>
 ---------
+UUID
+
+Since you cannot use dp:generate-uuid in GatewayScript, you have to call it in GatewayScript using the XSLT transform function: https://www.ibm.com/docs/en/datapower-gateways/10.0.1?topic=apis-transform-module
+
+
+
+uuid.js:
+
+var transform = require('transform');
+
+
+
+var options = {
+
+    "location": "local:///generate-uuid.xsl"
+
+};
+
+transform.xslt(options, function(error, nodelist, abortinfo) {
+
+    if (error) {
+
+        session.output.write("An error was returned when executing '" + options.location + "'");
+
+    }
+
+    else {
+
+        //write out the transformed result
+
+        session.output.write(nodelist);
+
+    }
+
+});
+
+
+
+
+
+generate-uuid.xsl:
+
+<xsl:stylesheet version="1.0"
+
+  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+
+  xmlns:dp="http://www.datapower.com/extensions"
+
+  extension-element-prefixes="dp">
+
+  <xsl:output omit-xml-declaration="yes" />
+
+
+
+  <xsl:template match="/">
+
+    <xsl:copy-of select="dp:generate-uuid()" />
+
+  </xsl:template>
+
+
+
+</xsl:stylesheet>
+
+
+result service output:
+
+
+
+curl http://dpl2idg2.rtp.raleigh.ibm.com:9191/
+
+050f68b7-4bae-4b20-9928-b6634d1db595
+
+
+
+curl http://dpl2idg2.rtp.raleigh.ibm.com:9191/
+
+8a289630-2195-4c97-8d6e-b6634d1ddd56
+
+
+
+curl http://dpl2idg2.rtp.raleigh.ibm.com:9191/
+
+8bc45b4b-37d5-4ac1-bf8f-b6634d1dd666
+
+
+------------
 var hm = require('header-metadata'); 
 
 var allHeaders = hm.current.get();
