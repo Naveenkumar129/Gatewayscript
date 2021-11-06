@@ -20,6 +20,30 @@ value='string($acctkn)'/>
 <xsl:value-of select="//output/access_token/text()"/>
 </xsl:variable>
 ---------
+
+boundary
+
+var boundary = "--VFCPlauenIstSuper";
+var crlf = String.fromCharCode(13) + String.fromCharCode(10);
+
+
+var output = 'Content-Disposition: form-data; name="' + "granttype" 
+
++ '"' + crlf ;
+  
+
+var output2 = output +'Content-Disposition: form-data; name="' + 
+
+"scope" + '"' + crlf ;
+  
+
+output += "--" + boundary + "--";
+
+output2 += "--" + boundary + "--";
+
+session.output.write(output2);
+
+--------
 UUID
 
 Since you cannot use dp:generate-uuid in GatewayScript, you have to call it in GatewayScript using the XSLT transform function: https://www.ibm.com/docs/en/datapower-gateways/10.0.1?topic=apis-transform-module
