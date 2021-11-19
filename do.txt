@@ -15,7 +15,14 @@ var hm = require ('header-metadata.js');
 var uri = sm.getVar ('var://service/URI');	
 console.warn("URI: " + uri);	
 --------
+var uri = sm.getVar('var://service/URI');
+        var routeURL = "http://"+destination.host+":"+destination.port+uri;
+        console.info("Routing to "+routeURL);
+        sm.setVar('var://service/routing-url', routeURL);                                        
+}
+session.output.write(destination);
 
+---------
 <dp:set-variable name="'var://context/sp/accessToken'"
 
 value='string($acctkn)'/>
