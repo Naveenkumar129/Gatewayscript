@@ -21,7 +21,13 @@ var uri = sm.getVar('var://service/URI');
         sm.setVar('var://service/routing-url', routeURL);                                        
 }
 session.output.write(destination);
-
+-----
+<xsl:value-of
+select="dp:variable('var://service/error-code')" />
+<xsl:value-of
+select="dp:variable('var://service/error-subcode')" />
+<xsl:value-of
+select="dp:variable('var://service/error-message')" />
 ---------
 <dp:set-variable name="'var://context/sp/accessToken'"
 
