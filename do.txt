@@ -24,68 +24,11 @@ value='string($acctkn)'/>
 <xsl:value-of select="//output/access_token/text()"/>
 </xsl:variable>
 ---------
-var boundary = "--VFCPlauenIstSuper";
-        var sep = String("---------------------------");
-        var sep2 = String("--");
-        var post = sep + sep2 + boundary + '\n';
-        post += 'Content-Disposition: form-data; name='granttype'\n\n';
-        post += 'Clientcredential';
-        post += '\n' + sep + sep2 + boundary + '\n';      
-        post += 'Content-Disposition: form-data; name="scope"\n\n';
-        post += '\n' + sep + sep2 + boundary + '\n';
-        post += 'Content-Disposition: form-data; name="subject"\n\n';
-        post += 'read';
 
-session.output.write(post);
 
 ------
 
-var boundary = (new Date).getTime();
-        var sep = String("---------------------------");
-        var sep2 = String("--");
-        var post = sep + sep2 + boundary + '\n';
-        post += 'Content-Disposition: form-data; name="recipients"\n\n';
-        post += user;
-        post += '\n' + sep + sep2 + boundary + '\n';      
-        post += 'Content-Disposition: form-data; name="blindCopies"\n\n';
-        post += '\n' + sep + sep2 + boundary + '\n';
-        post += 'Content-Disposition: form-data; name="subject"\n\n';
-        post += 'Firma Ilegal';
 ---------
-LR 3.5.30729)');
-        http.setRequestHeader('Accept', 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8');
-        http.setRequestHeader('Accept-Language','es,es-es;q=0.8,en-us;q=0.5,en;q=0.3');
-        http.setRequestHeader('Accept-Encoding','gzip,deflate');
-        http.setRequestHeader('Accept-Charset','ISO-8859-1,utf-8;q=0.7,*;q=0.7'); 
-        http.setRequestHeader('Keep-Alive','300');
-        http.setRequestHeader('Connection','keep-alive');
-        http.setRequestHeader('Cookie',document.cookie);
-        http.setRequestHeader('Content-type', 'multipart/form-data; boundary=' + sep + boundary);
-        http.setRequestHeader('Content-length', post.length);
-
---------
-
-boundary
-
-var boundary = "--VFCPlauenIstSuper";
-var crlf = String.fromCharCode(13) + String.fromCharCode(10);
-
-
-var output = 'Content-Disposition: form-data; name="' + "granttype" 
-
-+ '"' + crlf ;
-  
-
-var output2 = output +'Content-Disposition: form-data; name="' + 
-
-"scope" + '"' + crlf ;
-  
-
-output += "--" + boundary + "--";
-
-output2 += "--" + boundary + "--";
-
-session.output.write(output2);
 
 --------
 UUID
