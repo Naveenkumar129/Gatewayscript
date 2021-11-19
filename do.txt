@@ -24,11 +24,13 @@ value='string($acctkn)'/>
 <xsl:value-of select="//output/access_token/text()"/>
 </xsl:variable>
 ---------
+var hm = require('header-metadata'); 
 
+var allHeaders = hm.current.get();
+console.log(JSON.stringify(allHeaders));
 
-------
-
----------
+var contentType = hm.current.get('Content-Type');
+console.log("Content-Type header %s", contentType);
 
 --------
 UUID
