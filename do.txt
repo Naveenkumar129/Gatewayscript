@@ -21,6 +21,15 @@ var uri = sm.getVar('var://service/URI');
         sm.setVar('var://service/routing-url', routeURL);                                        
 }
 session.output.write(destination);
+--
+var uri = sm.getVar('var://service/URI');
+uri=uri.split(?).slice(1);
+
+var querystring = require ('querystring');
+
+var params=querystring.parse(uri);
+session.output.write(querystring.parse(uri));
+
 -----
 
 var abc = {
