@@ -22,6 +22,33 @@ var uri = sm.getVar('var://service/URI');
 }
 session.output.write(destination);
 -----
+
+var abc = {
+    "myparam1": "1",
+    "myparam2": "2",
+    "myparam3": "3",
+    "myparam4": "4"
+};
+
+var a1='';
+for (var p in abc) {
+  a1= a1+ p;
+  
+ }
+console.log(a1);
+
+var names3 ='';
+for (var p in abc) {
+  
+    names3 = names3+abc[p];
+
+}
+console.log(names3);
+
+
+var uri = sm.getVar('var://service/URI');
+uri=uri.split(?).slice(1);
+----------
 <xsl:value-of
 select="dp:variable('var://service/error-code')" />
 <xsl:value-of
