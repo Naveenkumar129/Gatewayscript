@@ -1,0 +1,118 @@
+ var vDecodedAuthFULL = new Buffer(vAuth,'base64').toString('ascii');
+ 
+var token = (new Buffer(auth.token, 'base64')).toString('utf-8');
+
+
+let buff2 = new Buffer(JSON.stringify(json_output));
+let b64_final = buff2.toString('base64');
+--
+
+// Read the action input context as a JSON object
+session.input.readAsJSON (function (error, input_json) {
+   if (error) {
+		ctx . setVar ( 'return' ,  '1' ) ;
+		ctx.setVar('error', '1');
+		ctx . setVar ( 'ServiceState' ,  '100' ) ;
+		ctx . setVar ( 'EstadoServicioDesc' ,  'Cannot read input JSON'  +  error ) ;
+		ctx.setVar('is_data', '1');
+		session . reject ( 'Cannot read input JSON'  +  error ) ;
+	} 
+	
+	else {
+	
+		var varSensibles = ctx.getVar('validateData');
+
+
+
+    
+    session.output.write('hello);
+}});
+---		
+---
+session.input.readAsJSON (function (error, input_json) {
+   if (error) {
+		ctx . setVar ( 'return' ,  '1' ) ;
+		ctx.setVar('error', '1');
+		ctx . setVar ( 'ServiceState' ,  '100' ) ;
+		ctx . setVar ( 'EstadoServicioDesc' ,  'Cannot read input JSON'  +  error ) ;
+		ctx.setVar('is_data', '1');
+		session . reject ( 'Cannot read input JSON'  +  error ) ;
+	} 
+	
+	else {
+	
+		//var varSensibles = ctx.getVar('validateData');
+
+var stringy =JSON.stringify(input_json);
+
+    session.output.write(stringy);
+}  )
+
+
+
+session.input.readAsJSON (function (error, input_json) {
+    if (error) {
+      // an error occurred when parsing the content, e.g. invalid JSON object
+      // uncatched error will stop the processing and the error will be logged
+      throw error;
+    }
+    // Add data to the input object and write to the ouput context
+    var stringy =JSON.stringify(input_json);
+    session.output.write(stringy);
+});
+
+
+
+
+
+session.input.readAsJSON (function (error, input_json) {
+   if (error) {
+		ctx . setVar ( 'return' ,  '1' ) ;
+		ctx.setVar('error', '1');
+		ctx . setVar ( 'ServiceState' ,  '100' ) ;
+		ctx . setVar ( 'EstadoServicioDesc' ,  'Cannot read input JSON'  +  error ) ;
+		ctx.setVar('is_data', '1');
+		session . reject ( 'Cannot read input JSON'  +  error ) ;
+	} 
+	
+	else {
+	
+		//var varSensibles = ctx.getVar('validateData');
+
+var stringy =JSON.stringify(input_json);
+
+    session.output.write(stringy);
+}  }  );
+
+
+--
+
+var hm = require('header-metadata');
+
+// Set the X-Hello-World header
+hm.current.set('X-Hello-World', 'Hello from DataPower domain foo');
+
+session.input.readAsBuffer (function (error, buffer) {
+    if (error) {
+      // throw the error if there was one
+      throw error;
+    }
+    // Since this simple application only returns a test hello world
+    // string, we'll just prepend our placeholder string
+    session.output.write("DataPower Foo Proxied: " + buffer.toString());
+});
+
+-------
+
+// set variable to the input context
+session.input.setVar('myInputVar', 'fdfdf');
+
+// get variable from the input context
+var myInputVar = session.input.getVar('myInputVar'); // {myInputValue: 4}
+
+
+session.output.write({
+	myInputVar: myInputVar	});
+	------
+	
+	
