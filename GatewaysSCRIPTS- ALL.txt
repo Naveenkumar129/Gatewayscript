@@ -5,7 +5,10 @@ var token = (new Buffer(auth.token, 'base64')).toString('utf-8');
 
 let buff2 = new Buffer(JSON.stringify(json_output));
 let b64_final = buff2.toString('base64');
---
+-----
+response.headers.get('content-type')};base64,` + buffer.tostring('base64');
+
+----
 
 // Read the action input context as a JSON object
 session.input.readAsJSON (function (error, input_json) {
