@@ -1,0 +1,65 @@
+- gatewayscript:
+        version: 1.0.0
+        title: GS-historicUsageAPIURL
+        source: |2
+          var uid = uuid();
+          var userInfoUsageResponse = apim.getvariable('userInfoResponseObj.body');
+          apim.setvariable('message.headers.User-Agent', 'myo2app/4.1.0');
+          apim.setvariable('message.headers.content-type','application/json');
+          apim.setvariable('message.headers.From',userInfoUsageResponse.given_name);
+          apim.setvariable('message.headers.originator',userInfoUsageResponse.user_id+':'+uid);
+          apim.setvariable('historicUsageEndpoint','http://lbtest0myo2apptierapigateway.myo2r53.co.uk:8424/sharedata/consumerPAYM/CURRENT/usage/historic/6');
+          function uuid() {
+            var uuid = "", i, random;
+            for (i = 0; i < 32; i++) {
+              random = Math.random() * 16 | 0;
+              if (i == 8 || i == 12 || i == 16 || i == 20) {
+                uuid += "-"
+              }
+              uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
+            }
+            return uuid;
+          }
+		  
+		  
+		  
+		  
+		    //Extract general metadata from system variables
+          var systemDateTime = apim.getvariable('system.datetime');
+          var apicTxId = apim.getvariable('apic-transaction-id');
+          var xGlobalTxId = apim.getvariable('request.headers.x-global-transaction-id');
+          var requestURI = apim.getvariable('request.uri');
+
+          //Extract response metadata from system variables
+          var responseHeaders = apim.getvariable('message.headers');
+		  
+		  
+		  
+		  
+		  general metadata from system variables
+		  var apiStartTimeMS = (new Date()).getTime();\napim.setvariable('apiStartTimeMS',
+          apiStartTimeMS);
+		  var systemDateTime = apim.getvariable('system.datetime');
+		  var          apicTxId = \"\";
+		  if (apim.getvariable('request.headers.apic-transaction-id')){
+             apicTxId = apim.getvariable('request.headers.apic-transaction-id');}else
+          {    apicTxId = uuidv4();
+		  }apim.setvariable('apic-transaction-id',       apicTxId);
+		  apim.setvariable('message.headers.apic-transaction-id', apicTxId);\n\nvar
+          xGlobalTxId = apim.getvariable('request.headers.x-global-transaction-id');\n\n//Extract
+          client metadata from system variables\nvar clientIPAddress = apim.getvariable('request.headers.x-client-ip');\nvar
+          clientId = apim.getvariable('client.app.id');\nvar clientAppName = apim.getvariable('client.app.name');\nvar
+          clientAppType = apim.getvariable('client.app.type');\nvar clientOrgName
+          = apim.getvariable('client.org.name');\n\n//Extract api metadata from system
+          variables\nvar apiName = apim.getvariable('api.name');\nvar apiVersion =
+          apim.getvariable('api.version');\nvar providerOrgName = apim.getvariable('api.org.name');\nvar
+          catalogName = apim.getvariable('env.path');\nvar apiBasePath = apim.getvariable('api.root');\nvar
+          operationPath = apim.getvariable('api.operation.path');\n\n\n//Extract product
+          metadata from system variables\n//
+		  
+		  var productName = apim.getvariable('product.name');\n//var
+          productVersion = apim.getvariable('product.version');\nvar planName = apim.getvariable('plan.name');\nvar
+          planVersion = apim.getvariable('plan.version');\nvar planRateLimit = apim.getvariable('plan.rate-limit');\n\n//Extract
+          request metadata from system variables\nvar requestMethod = apim.getvariable('request.verb');\nvar
+          requestURI = apim.getvariable('request.uri');\nvar requestHeaders = apim.getvariable('request.headers');\n\ndelete
+          requestHeaders['accept-encoding'];\ndelete requestHeaders['x-global-transaction-id'];\ndelete
