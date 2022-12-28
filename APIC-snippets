@@ -1,3 +1,574 @@
+
+https://github.com/fdut/apic/tree/435c2200cc8821b3300ec336ea6c74f25ba501d4/gatewayscripts/whoami
+https://github.com/Kalumburu/microgateway/tree/8af2307113f84b51028a3992a1dd6d73c595e6c2/test/definitions
+
+----------
+execute:
+                - gatewayscript:
+                    title: gatewayscript
+                    version: 1.0.0
+                    source: |-
+                      // @ozair @spoon
+                      var out = {"message":"Greeting! Hello World"};
+                      out.whoami = apim.getContext('api.endpoint.address');
+                      session.output.write(JSON.stringify(out));
+                      apim.output("application/json");
+
+---
+
+- gatewayscript:
+                    version: 2.0.0
+                    title: gatewayscript
+                    source: |-
+                      context.message.body.readAsJSON(function (error, response)
+                        {
+                          if (error)
+                          {
+                            return;
+                          }
+                          console.log("response %s", JSON.stringify(response));
+                          context.message.body.write(JSON.stringify(response));
+                        });
+						
+======
+
+ execute:
+          - set-variable:
+              title: set-variable
+              actions:
+                - set: message.body
+                  value: '{"message": "Error occurred during search operation."}'
+                  type: string
+              version: 2.0.0
+====
+
+- gatewayscript:
+                    version: 2.0.0
+                    title: gatewayscript
+                    source: |-
+                      context.message.body.readAsJSON(function (error, response)
+                        {
+                          if (error)
+                          {
+                            return;
+                          }
+                          console.log("response %s", JSON.stringify(response));
+                          context.message.body.write(JSON.stringify(response));
+                        });
+                        
+                        context.message.statusCode = 200;
+						
+						
+======
+
+// output to the system logs, the input parameters passed in the URL query string
+console.error('original-url : ', apim.getContext('request.parameters.original-url'));
+console.error('app-name : ', apim.getContext('request.parameters.app-name'));
+console.error('appid : ', apim.getContext('request.parameters.appid'));
+console.error('org : ', apim.getContext('request.parameters.org'));
+console.error('orgid : ', apim.getContext('request.parameters.orgid'));
+console.error('catalog : ', apim.getContext('request.parameters.catalog'));
+console.error('catalogid : ', apim.getContext('request.parameters.catalogid'));
+console.error('provider : ', apim.getContext('request.parameters.provider'));
+console.error('providerid : ', apim.getContext('request.parameters.providerid'));
+
+
+"// output to the system logs, the input parameters passed in the URL query string\n
+console.error('original-url : ', apim.getContext('request.parameters.original-url'));
+console.error('app-name : ', apim.getContext('request.parameters.app-name'));
+console.error('appid : ', apim.getContext('request.parameters.appid'));
+console.error('org : ', apim.getContext('request.parameters.org'));
+console.error('orgid : ', 
+apim.output('application/json')
+apim.readInputAsBuffer(function (error, buffer) {}
+
+ apim.output({"httpCode": "401", "httpMessage": "Unauthorized", "moreInformation": "wrong password"});    }   
+=======
+//user-level scope
+  //set the scope value based on the API assembly set-variable 
+else if (apim.getContext('request.parameters.component') === 'owner') {
+
+----
+/application-level scope
+//set the scope value based on the API assembly set-variable 
+if (apim.getContext('request.parameters.component') === 'application') {
+---
+"api.endpoint.hostname
+
+
+==
+ - switch:
+        title: "switch"
+        case:
+        - condition: "((request.verb==='POST')&&(api.operation.path==='/accounts/balances'))"
+          execute:
+          - gatewayscript:
+		  
+------
+- switch:
+              title: "switch"
+              case:
+              - condition: "$(env.path)=='sandbox'"
+                execute:
+                - gatewayscript:
+---
+securityDefinitions:
+  clientID:
+    type: apiKey
+    in: header
+    name: X-IBM-Client-Id
+  oauth2:
+    type: oauth2
+    x-ibm-oauth-provider: scenario1-oauth
+    flow: accessCode
+    authorizationUrl: https://$(catalog.url)/v1/oauth2/authorize
+    tokenUrl: https://$(catalog.url)/v1/oauth2/token
+    scopes:
+      scope1: サンプル・スコープの説明 1
+security:
+  - clientID: []
+schemes:
+  - https
+
+---
+basePath: /ro-context
+
+x-ibm-configuration:
+  assembly:
+    execute:
+      - javascript:
+          source: |-
+            var name = get('request.headers.x-ro-name');
+            try {
+              set(name, 'new value');
+              throw {name:'ROTextFailedError'};
+            } catch (e) {
+              //expect error
+              if (e.name === 'TypeError') {
+                message.body = {result:'ok'};
+              } else {
+                throw {name:'ROTextFailedError'};
+              }
+            }
+---
+swagger: '2.0'
+info:
+  version: 1.0.0
+  title: Weather
+  x-ibm-name: weather
+host: $(catalog.host)
+basePath: /weather
+paths:
+  /wind:
+    get:
+      responses:
+        '200':
+          description: 200 OK
+  /temperature:
+    get:
+      responses:
+        '200':
+          description: 200 OK
+securityDefinitions: {}
+---
+security: []
+schemes:
+  - http
+produces:
+  - application/json
+x-ibm-configuration:
+  assembly:
+    execute:
+      - operation-switch:
+          title: operation-switch
+          case:
+            - operations:
+                - verb: get
+                  path: /wind
+              execute:
+                - set-variable:
+                    title: set-variable
+                    actions:
+                      - set: message.body
+                        value: '{ "wind": "17km/h" }'
+                      - set: message.headers.content-type
+                        value: application/json
+            - operations:
+                - verb: get
+                  path: /temperature
+              execute:
+                - set-variable:
+                    title: set-variable
+                    actions:
+                      - set: message.body
+                        value: '{ "temperature": "27C" }'
+                      - set: message.headers.content-type
+                        value: application/json
+--
+x-ibm-configuration:
+  assembly:
+    execute:
+      - invoke:
+          target-url: "https://localhost:8890/"
+          tls-profile: "theTlsProfile-bob"
+  enforced: true
+  testable: true
+  phase: realized
+  cors:
+    enabled: true
+
+---
+
+x-ibm-configuration:
+  assembly:
+    execute:
+      - set-variable:
+          title: set-variable
+          actions:
+            - set: message.body
+              value: '{ "id": "$(client.app.id)", "balance": 23501 }'
+            - set: message.headers.content-type
+              value: application/json
+  enforced: true
+  testable: true
+  phase: realized
+  cors:
+    enabled: true
+
+
+---
+
+info:
+  version: 1.0.0
+  title: basic
+  x-ibm-name: basic
+securityDefinitions:
+  basic-ldap:
+    type: basic
+    description: ''
+    x-ibm-authentication-url:
+      url: 'ldap://localhost:1389'
+  basic-http:
+    type: basic
+    description: ''
+    x-ibm-authentication-url:
+      url: 'http://localhost:8889/auth'
+basePath: /basic
+swagger: '2.0'
+paths:
+  /path-2:
+    get:
+      responses:
+        '200':
+          description: 200 OK
+      security:
+        - basic-http: []
+  /path-1:
+    get:
+      responses:
+        '200':
+          description: 200 OK
+      security:
+        - basic-ldap: []
+x-ibm-configuration:
+  assembly:
+    execute:
+      - invoke:
+          title: invoke
+          target-url: 'http://localhost:8889/'
+
+schemes:
+  - 'http'
+
+----
+
+info:
+  version: 1.0.0
+  title: ratelimit
+  x-ibm-name: ratelimit
+  description: ratelimit test suite
+basePath: /ratelimit
+swagger: '2.0'
+paths:
+  /ratelimit:
+    get:
+      responses:
+        '200':
+          description: 200 OK
+x-ibm-configuration:
+  assembly:
+    execute:
+      - invoke:
+          title: invoke
+          target-url: 'http://localhost:8889/'
+schemes:
+  - http
+
+----
+info:
+  version: 1.0.0
+  title: cors-disabled
+  x-ibm-name: cors-disabled
+basePath: /cors-disabled
+swagger: '2.0'
+paths:
+  /path-cors:
+    get:
+      responses:
+        '200':
+          description: 200 OK
+x-ibm-configuration:
+  assembly:
+    execute:
+      - invoke:
+          title: invoke
+          target-url: 'http://localhost:8889/'
+  cors:
+    enabled: false
+
+schemes:
+  - http
+
+-----
+paths:  # put the paths in alphabetical order
+  /assembly/identity:
+    post:
+      summary: copy input and respond in output
+      responses:
+        '200':
+          description: 200 OK
+  /assembly/large-payload:
+    get:
+      parameters:
+        - name: size
+          in: query
+          description: the size of payload to return
+          type: integer
+      responses:
+        '200':
+          description: 200 OK
+  /assembly/policy-not-found:
+    get:
+      summary: expect error when policy is not found
+      responses:
+        '200':
+          description: 200 OK
+
+---
+
+x-ibm-configuration:
+  assembly:
+    execute:
+      - invoke:
+          title: invoke
+          target-url: 'http://localhost:8889/'
+schemes:
+  - http
+---
+
+x-ibm-configuration:
+  assembly:
+    execute:
+      - invoke:
+          title: invoke
+          target-url: 'http://localhost:8889/'
+schemes:
+  - https
+  - http
+  
+----
+ result = myAccountsInfo.accountsData;
+
+    if (!result) {
+      result = {};
+    }
+  } catch (e) {
+    result = e;
+  }
+
+---
+var accountId = apim.getvariable('request.parameters.account-id');
+
+var userId = "";
+if (apim.getvariable('request.authorization')) {
+  userId = apim.getvariable('oauth.resource-owner');
+}
+-----
+
+=--- assembly:
+    execute:
+      - invoke:
+          target-url: $(TARGET_HOST)$(request.path)$(request.search)
+          tls-profile: ''
+		  
+----
+- condition: apim.getvariable('HttpMethod') == 'GET'
+  - condition: apim.getvariable('HttpMethod') == 'POST'
+- condition: "request.verb == ('GET')"
+- condition: "request.verb == ('POST')"
+
+//Extract general metadata from system variables
+          var systemDateTime = apim.getvariable('system.datetime');
+          var apicTxId = apim.getvariable('apic-transaction-id');
+          var xGlobalTxId = apim.getvariable('request.headers.x-global-transaction-id');
+          var requestURI = apim.getvariable('request.uri');
+          //Extract response metadata from system variables
+          var responseHeaders = apim.getvariable('message.headers');
+
+-----------
+x-ibm-configuration:
+  testable: true
+  enforced: true
+  cors:
+    enabled: true
+  catalogs:
+    apic-dev:
+      properties:
+        runtime-url: $(TARGET_URL)
+    sb:
+      properties:
+        runtime-url: 'http://localhost:4001'
+		
+------
+- gatewayscript:
+        version: 1.0.0
+        title: GS:FetchValidationConfig
+        description: This GW Script will create URL to fetch validation config for
+          all apis
+        source: |-
+          var clientId = apim.getvariable('client.app.id');
+          apim.setvariable('message.headers.x-ibm-client-id', clientId);
+          apim.setvariable('message.headers.content-type', 'application/json');
+          //form url for to fetch errorConfig JSON
+          var orgName = apim.getvariable('api.org.name');
+          var catalog = apim.getvariable('env.path');
+          apim.setvariable('apicURLPrefix', 'https://0.0.0.0:9443/'+orgName+'/'+catalog);
+          var validationConfigURL = apim.getvariable('apicURLPrefix')+'/'+'config/validationconfig';
+          apim.setvariable('validationConfigURL', validationConfigURL);
+          //record time in ms just before the invoke policy
+          apim.setvariable('startTimeMS', (new Date()).getTime());
+          apim.setvariable('policyName', 'Invoke-ValidationConfig');
+    - invoke:
+        version: 1.0.0
+        title: Invoke-ValidationConfig
+        timeout: 60
+        verb: GET
+        cache-response: protocol
+        cache-ttl: 900
+        description: Load all messages  and properties in context
+        target-url: $(validationConfigURL)
+        output: validationConfig
+---
+ var logString = "type:=response"
+                          + " | system-datetime:=" +        systemDateTime
+                          + " | total-time-elapsed:=" +     totalTimeElapsed;
+                          ;
+          console.log(logString);
+-----------
+var clientId = apim.getvariable('client.app.id');
+                apim.setvariable('message.headers.x-ibm-client-id', clientId);
+                apim.setvariable('message.headers.content-type', 'application/xml');
+                //form url for to fetch errorConfig JSON
+                var orgName = apim.getvariable('api.org.name');
+                var catalog = apim.getvariable('env.path');
+                apim.setvariable('apicURLPrefix', 'https://0.0.0.0:9443/'+orgName+'/'+catalog);
+                var soapConfigURL = apim.getvariable('apicURLPrefix')+'/config/soapconfig';
+                apim.setvariable('soapConfigURL', soapConfigURL);
+----------
+
+- gatewayscript:
+        version: 1.0.0
+        title: GS-historicUsageAPIURL
+        source: |2
+          var uid = uuid();
+          var userInfoUsageResponse = apim.getvariable('userInfoResponseObj.body');
+          apim.setvariable('message.headers.User-Agent', 'myo2app/4.1.0');
+          apim.setvariable('message.headers.content-type','application/json');
+          apim.setvariable('message.headers.From',userInfoUsageResponse.given_name);
+          apim.setvariable('message.headers.originator',userInfoUsageResponse.user_id+':'+uid);
+          apim.setvariable('historicUsageEndpoint','http://lbtest0myo2apptierapigateway.myo2r53.co.uk:8424/sharedata/consumerPAYM/CURRENT/usage/historic/6');
+          function uuid() {
+            var uuid = "", i, random;
+            for (i = 0; i < 32; i++) {
+              random = Math.random() * 16 | 0;
+              if (i == 8 || i == 12 || i == 16 || i == 20) {
+                uuid += "-"
+              }
+              uuid += (i == 12 ? 4 : (i == 16 ? (random & 3 | 8) : random)).toString(16);
+            }
+            return uuid;
+          }
+		  
+		  
+		  
+		  
+		    //Extract general metadata from system variables
+          var systemDateTime = apim.getvariable('system.datetime');
+          var apicTxId = apim.getvariable('apic-transaction-id');
+          var xGlobalTxId = apim.getvariable('request.headers.x-global-transaction-id');
+          var requestURI = apim.getvariable('request.uri');
+
+          //Extract response metadata from system variables
+          var responseHeaders = apim.getvariable('message.headers');
+		  
+		  
+		  
+		  
+		  general metadata from system variables
+		  var apiStartTimeMS = (new Date()).getTime();\napim.setvariable('apiStartTimeMS',
+          apiStartTimeMS);
+		  var systemDateTime = apim.getvariable('system.datetime');
+		  var          apicTxId = \"\";
+		  if (apim.getvariable('request.headers.apic-transaction-id')){
+             apicTxId = apim.getvariable('request.headers.apic-transaction-id');}else
+          {    apicTxId = uuidv4();
+		  }apim.setvariable('apic-transaction-id',       apicTxId);
+		  apim.setvariable('message.headers.apic-transaction-id', apicTxId);\n\nvar
+          xGlobalTxId = apim.getvariable('request.headers.x-global-transaction-id');\n\n//Extract
+          client metadata from system variables\nvar clientIPAddress = apim.getvariable('request.headers.x-client-ip');\nvar
+          clientId = apim.getvariable('client.app.id');\nvar clientAppName = apim.getvariable('client.app.name');\nvar
+          clientAppType = apim.getvariable('client.app.type');\nvar clientOrgName
+          = apim.getvariable('client.org.name');\n\n//Extract api metadata from system
+          variables\nvar apiName = apim.getvariable('api.name');\nvar apiVersion =
+          apim.getvariable('api.version');\nvar providerOrgName = apim.getvariable('api.org.name');\nvar
+          catalogName = apim.getvariable('env.path');\nvar apiBasePath = apim.getvariable('api.root');\nvar
+          operationPath = apim.getvariable('api.operation.path');\n\n\n//Extract product
+          metadata from system variables\n//
+		  
+		  var productName = apim.getvariable('product.name');\n//var
+          productVersion = apim.getvariable('product.version');\nvar planName = apim.getvariable('plan.name');\nvar
+          planVersion = apim.getvariable('plan.version');\nvar planRateLimit = apim.getvariable('plan.rate-limit');\n\n//Extract
+          request metadata from system variables\nvar requestMethod = apim.getvariable('request.verb');\nvar
+          requestURI = apim.getvariable('request.uri');\nvar requestHeaders = apim.getvariable('request.headers');\n\ndelete
+          requestHeaders['accept-encoding'];\ndelete requestHeaders['x-global-transaction-id'];\ndelete
+		  
+		  =---
+		  
+		  
+		  var optionsintrospection = {
+                    target: target_introspect,
+                    sslClientProfile : 'webapi-sslcli-mgmt',
+                    method: 'post',
+                    headers: headerintrospect,
+                    contentType: 'application/json',
+                    timeout: 60,
+                    data: {"token": access_token_request}
+                };
+
+                var optionsintrospectionKeycloak = {
+                    target: target_introspect_keycloak,
+                    sslClientProfile : 'webapi-sslcli-mgmt',
+                    method: 'post',
+                    headers: headerintrospectKeycloak,
+                    contentType: 'application/x-www-form-urlencoded',
+                    timeout: 60,
+                    data: {}
+                };
+
+
+
+---
+========
 - gatewayscript:
         version: 1.0.0
         title: GS-historicUsageAPIURL
