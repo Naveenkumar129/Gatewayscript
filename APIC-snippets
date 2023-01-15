@@ -1,6 +1,7 @@
 
 https://github.com/fdut/apic/tree/435c2200cc8821b3300ec336ea6c74f25ba501d4/gatewayscripts/whoami
 https://github.com/Kalumburu/microgateway/tree/8af2307113f84b51028a3992a1dd6d73c595e6c2/test/definitions
+https://github.com/jdelagal/hydramigration/blob/9b464c447c2df4cb2673209f593d14d6d5d4521f/migracion/apiconnect/policy/tokenValidation.js
 
 var access_token_request =  JSON.stringify(apic.getvariable('request.headers.authorization') ) ;
                 access_token_request = access_token_request.split(" ")[1].split("\"")[0]
