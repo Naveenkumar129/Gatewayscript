@@ -22,6 +22,20 @@ var optionsGetClientID = {
 
 ----------
 
+var json = {"tsn": {
+    "settings": 
+        {"app_name": "TSN",  "version": "1.0"}, 
+    "occurrences": 
+        ["Party", "Music"]
+    }
+}; 
+
+Object.keys(json.tsn).forEach(function(key){
+    var item = json.tsn[key];
+    console.log(item);
+});
+-----
+
 
 
 // Calling external system example.
