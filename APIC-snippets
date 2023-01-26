@@ -5,7 +5,27 @@ https://github.com/jdelagal/hydramigration/blob/9b464c447c2df4cb2673209f593d14d6
 
 var access_token_request =  JSON.stringify(apic.getvariable('request.headers.authorization') ) ;
                 access_token_request = access_token_request.split(" ")[1].split("\"")[0]
+-----
 
+ source: |
+                      // author : @spoon or @shiup
+                      var apic = require('./apim.custom.js');
+                      apic.output('application/json');
+                      var reqauth = apic.getvariable('request.authorization').split(' ');
+                      var splitval = new Buffer((reqauth[1] || ''), 'base64').toString('utf8').split(':');
+                      var username = splitval[0] || '';
+                      var password = splitval[1] || '';
+                      apic.console.debug('user credential : [' + username + ':' + password + ']');
+                      if (username === apic.getvariable('request.parameters.username') && password === apic.getvariable('request.parameters.password')) {
+                          session.output.write({"authenticatedUser":username});
+                          apic.setvariable('message.headers.api-authenticated-credential', 'cn=' + username + ',email=' + username + '@poon.com');
+                          apic.setvariable('message.status.code', 200)
+                      }
+                      else {
+                          apic.setvariable('message.status.code', 401);
+                      }
+		      
+		     --------
 var headerintrospect =
                 { "Content-Type": "application/json","Authorization": "bearer "+responseData.access_token} ;
 
