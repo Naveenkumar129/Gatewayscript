@@ -7,48 +7,49 @@ var access_token_request =  JSON.stringify(apic.getvariable('request.headers.aut
                 access_token_request = access_token_request.split(" ")[1].split("\"")[0]
 -----
 
- - gatewayscript:
-                    title: create-custom-consent-form
-                    version: 1.0.0
-                    source: |
-                      var formPost5060 = '<html lang="en" xml:lang="en">' +
-                        '<head><title>Request for permission</title></head>' +
-                        '<body class="customconsent"><div><div>' +
-                        '<form method="post" enctype="application/x-www-form-urlencoded" action="authorize">' +
-                        '<AZ-INJECT-HIDDEN-INPUT-FIELDS/>' +
-                        '<p>Greeting..</p><DISPLAY-RESOURCE-OWNER/>' +
-                        '<p>This app </p><OAUTH-APPLICATION-NAME/><p> would like to access your data.</p>' +
-                        '<div>' +
-                        '<button class="cancel" type="submit" name="approve" value="false">No Thanks</button>' +
-                        '<button class="submit" type="submit" name="approve" value="true">Allow Access</button>' +
-                        '</div></form></div>' +
-                        '<AZ-INTERNAL-CUSTOM-FORM-ERROR/>' +
-                        '</div></body></html>';
-                      session.output.write(formPost5060);
-                      /*
-                      **************************
-                      however there is a known issue with this support, that will be fixed in future, post 5060 release.  So for now, use the following instead
-                      ***************************
-                      */
-                      var formUpTo5060 = '<html lang="en" xml:lang="en">' +
-                        '<head><title>Request for permission</title></head>' +
-                        '<body class="customconsent"><div><div>' +
-                        '<form method="post" enctype="application/x-www-form-urlencoded" action="authorize">' +
-                        '<input type="hidden" name="original-url" value="A"/>' +
-                        '<input type="hidden" name="client_id" value="A"/>' +
-                        '<AZ-INJECT-HIDDEN-INPUT-FIELDS/>' +
-                        '<p>Greeting..</p><DISPLAY-RESOURCE-OWNER/>' +
-                        '<p>This app </p><OAUTH-APPLICATION-NAME/><p> would like to access your data.</p>' +
-                        '<div>' +
-                        '<button class="cancel" type="submit" name="approve" value="false">No Thanks</button>' +
-                        '<button class="submit" type="submit" name="approve" value="true">Allow Access</button>' +
-                        '</div></form></div>' +
-                        '<AZ-INTERNAL-CUSTOM-FORM-ERROR/>' +
-                        '</div></body></html>';
-                      session.output.write(formUpTo5060);
-                      apim.output('text/html');
-                      apim.setvariable('message.status.code', 200);
-		      
+---
+swagger: "2.0"
+info:
+  x-ibm-name: "whoami"
+  title: "whoami"
+  version: "1.0.0"
+schemes:
+- "https"
+host: "$(catalog.host)"
+basePath: "/mockup"
+consumes:
+- "application/json"
+produces:
+- "application/json"
+securityDefinitions:
+  clientIdHeader:
+    type: "apiKey"
+    in: "header"
+    name: "X-IBM-Client-Id"
+security:
+- clientIdHeader: []
+x-ibm-configuration:
+  testable: true
+  enforced: true
+  cors:
+    enabled: true
+  assembly:
+    execute:
+    - gatewayscript:
+        title: "whoami"
+        version: "1.0.0"
+        source: "var out = {\"message\":\"Greeting! Hello World\"};\nout.context=apim.getContext();\n\
+          session.output.write(JSON.stringify(out));\napim.output(\"application/json\"\
+          );\n"
+  phase: "realized"
+paths:
+  /whoami:
+    get:
+      responses:
+        200:
+          description: "200 OK"
+definitions: {}
+tags: []
 		     --------
 var headerintrospect =
                 { "Content-Type": "application/json","Authorization": "bearer "+responseData.access_token} ;
