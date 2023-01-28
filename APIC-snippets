@@ -6,7 +6,22 @@ https://github.com/jdelagal/hydramigration/blob/9b464c447c2df4cb2673209f593d14d6
 var access_token_request =  JSON.stringify(apic.getvariable('request.headers.authorization') ) ;
                 access_token_request = access_token_request.split(" ")[1].split("\"")[0]
 -----
+var scopeFound = false;
 
+                    for (var i = 0; i < reqScopes.length; i++) {
+                        if (apiScopes.indexOf(reqScopes[i]) >= 0) {
+                            scopeFound = true;
+                            break;
+                        }
+                    };
+
+                    if (!scopeFound) {
+                        throw {
+                            name: "Forbidden",
+                            message: "Insufficient Scope",
+                            errorType: "JWTError",
+                            errorCode: "403"
+                        }
 ---
 swagger: "2.0"
 info:
