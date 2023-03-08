@@ -1,5 +1,9 @@
+const url = "/github.com?locale=ar&BOIOpenBanking";
+const params = new URLSearchParams(url.slice(url.indexOf('?')));
+const langCode = params.get('locale'); // "ar"
 
-let newString = originalString.replace(/ /g, "T");
+
+---let newString = originalString.replace(/ /g, "T");
 
 ---
 var vDecodedAuthFULL = new Buffer(vAuth,'base64').toString('ascii');
